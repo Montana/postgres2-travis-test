@@ -22,9 +22,9 @@ before_script:
   - sudo service postgresql stop
   - sudo sed -i 's/#port = 5432/port = 5433/' /etc/postgresql/10/main/postgresql.conf
   - sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/" /etc/postgresql/10/main/postgresql.conf
-  - sudo pg_ctlcluster 10 main start -- -o "-c config_file=/etc/postgresql/10/main/postgresql.conf"
+  - sudo pg_ctlcluster 10 main start -o "-c port=5433 -c config_file=/etc/postgresql/10/main/postgresql.conf"
   - sleep 5
-  - sudo netstat -tuln | grep 5433 || (sudo cat /var/log/postgresql/postgresql-10-main.log && false)
+  - sudo netstat -tuln | grep 5433 || (sudo cat /etc/postgresql/10/main/postgresql.conf | grep port && sudo cat /var/log/postgresql/postgresql-10-main.log && false)
   - psql -U postgres -p 5433 -h localhost -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 script:
   - psql -U postgres -p 5433 -h localhost -c "SELECT version();"
