@@ -20,8 +20,11 @@ before_script:
   - sudo sh -c 'echo "deb https://apt-archive.postgresql.org/pub/repos/apt/ xenial-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
   - sudo apt-get update -qq
   - sudo service postgresql stop
+  - sudo sed -i 's/#port = 5432/port = 5433/' /etc/postgresql/10/main/postgresql.conf
+  - sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/" /etc/postgresql/10/main/postgresql.conf
   - sudo service postgresql start 10
-  - sleep 2
+  - sleep 5
+  - sudo netstat -tuln | grep 5433
   - psql -U postgres -p 5433 -h localhost -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 script:
   - psql -U postgres -p 5433 -h localhost -c "SELECT postgis_full_version();"
