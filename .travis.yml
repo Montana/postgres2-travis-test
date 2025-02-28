@@ -21,4 +21,3 @@ before_script:
   - sudo apt-get update -qq
   - sudo service postgresql stop
   - sudo sed -i 's/#port = 5432/port = 5433/' /etc/postgresql/10/main/postgresql.conf
-  - psql -U postgres -p 5433 -h localhost -c "SELECT version();"
