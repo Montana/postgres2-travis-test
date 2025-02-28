@@ -17,7 +17,7 @@ env:
   - PGPORT=5433
 before_script:
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7FCC7D46ACCC4CF8
-  - sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+  - sudo sh -c 'echo "deb https://apt-archive.postgresql.org/pub/repos/apt/ xenial-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
   - sudo apt-get update -qq
   - psql -U postgres -p 5433 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 script:
