@@ -1,0 +1,26 @@
+dist: xenial
+sudo: true
+language: generic
+services:
+  - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - pgdg-xenial
+    packages:
+      - postgresql-10
+      - postgresql-10-postgis-2.4
+      - postgresql-10-postgis-2.4-scripts
+env:
+  - PGPORT=5433
+before_script:
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7FCC7D817595E993
+  - sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+  - sudo apt-get update -qq
+  - psql -U postgres -p 5433 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+script:
+  - psql -U postgres -p 5433 -c "SELECT postgis_full_version();"
+cache:
+  apt: true
